@@ -147,36 +147,35 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
     y_dash = np.array(y_dash)
     yRep = Repair_Solution(y_dash, population, mapp, flag, x_K, x_count, b, a, feature)  # Repaired solution
 
+    for m in range(x_count): # Since x_count holds nonzero count of y_dash and so of yRep
+        if mutation_prob > uniform(0,1):  # Mutation probability
+            DeltaR = uniform(0, 1)
+            if DeltaR < 0.5:
+                #print "upper and lower value for {0}th component for solution {1} :".format(m,i), b[m],",",a[m]
+                if b[m]==a[m]:
+                    b[m]=1
+                    a[m]=0
+                p=eta + 1
+                temp2 = math.pow(((b[m] - yRep[m]) / (b[m] - a[m])),p)
+                temp1=((2 * DeltaR) + (1 - 2 * DeltaR) *temp2 )
+                t1=1 /float(p)
+                di = math.pow(abs(temp1), t1)-1
+                #print "a, di : ", tt, di
+                nsol[m] = Mutation(yRep[m], di, b[m], a[m])
+            else:
+                #print "upper and lower value for {0}th component for solution {1} :".format(m, i), b[m], ",", a[m]
+                if b[m] == a[m]:
+                    b[m] = 1
+                    a[m] = 0
+                temp2=float((eta + 1))
+                temp1 = math.pow(((yRep[m] - a[m]) / (b[m] - a[m])),temp2)
+                temp3= 1/temp2
+                ist_power = math.pow(abs(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1), temp3)
+                #print "  math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, temp2)  =  ", ist_power
+                di = 1 - ist_power
+                nsol[m] = Mutation(yRep[m], di, b[m], a[m])
+                
     if mp < 0.75:
-        for m in range(x_count): # Since x_count holds nonzero count of y_dash and so of yRep
-            if mutation_prob > uniform(0,1):  # Mutation probability
-                DeltaR = uniform(0, 1)
-                if DeltaR < 0.5:
-                    #print "upper and lower value for {0}th component for solution {1} :".format(m,i), b[m],",",a[m]
-                    if b[m]==a[m]:
-                        b[m]=1
-                        a[m]=0
-                    p=eta + 1
-                    temp2 = math.pow(((b[m] - yRep[m]) / (b[m] - a[m])),p)
-                    temp1=((2 * DeltaR) + (1 - 2 * DeltaR) *temp2 )
-                    t1=1 /float(p)
-                    di = math.pow(abs(temp1), t1)-1
-                    #print "a, di : ", tt, di
-                    nsol[m] = Mutation(yRep[m], di, b[m], a[m])
-                else:
-                    #print "upper and lower value for {0}th component for solution {1} :".format(m, i), b[m], ",", a[m]
-                    if b[m] == a[m]:
-                        b[m] = 1
-                        a[m] = 0
-                    temp2=float((eta + 1))
-                    temp1 = math.pow(((yRep[m] - a[m]) / (b[m] - a[m])),temp2)
-                    temp3= 1/temp2
-                    ist_power = math.pow(abs(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1), temp3)
-                    #print "  math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, temp2)  =  ", ist_power
-                    di = 1 - ist_power
-                    nsol[m] = Mutation(yRep[m], di, b[m], a[m])
-
-
         #print "Normal mutation  for solution {0} ".format(i)
         return nsol, x_K
 
