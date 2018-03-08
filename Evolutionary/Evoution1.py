@@ -156,12 +156,11 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
                     if b[m]==a[m]:
                         b[m]=1
                         a[m]=0
-                    temp2 = ((b[m] - yRep[m]) / (b[m] - a[m]))
-                    temp1=((2 * DeltaR) + (1 - 2 * DeltaR) *temp2 )
                     p=eta + 1
+                    temp2 = math.pow(abs((b[m] - yRep[m]) / (b[m] - a[m])),p)
+                    temp1=((2 * DeltaR) + (1 - 2 * DeltaR) *temp2 )
                     t1=1 /float(p)
-                    tt=math.pow(abs(temp1), p)
-                    di = math.pow(tt, t1)-1
+                    di = math.pow(abs(temp1), t1)-1
                     #print "a, di : ", tt, di
                     nsol[m] = Mutation(yRep[m], di, b[m], a[m])
                 else:
@@ -169,13 +168,12 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
                     if b[m] == a[m]:
                         b[m] = 1
                         a[m] = 0
-                    temp1 = ((yRep[m] - a[m]) / (b[m] - a[m]))
                     temp2=float((eta + 1))
+                    temp1 = math.pow(abs((yRep[m] - a[m]) / (b[m] - a[m])),temp2)
                     temp3= 1/temp2
-                    ist_power = math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, temp2)
+                    ist_power = math.pow(abs(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1), temp3)
                     #print "  math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, temp2)  =  ", ist_power
-                    second_pow = math.pow(abs(ist_power), temp3)
-                    di = 1 - second_pow
+                    di = 1 - ist_power
                     nsol[m] = Mutation(yRep[m], di, b[m], a[m])
 
 
