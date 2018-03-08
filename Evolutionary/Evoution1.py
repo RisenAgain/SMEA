@@ -174,10 +174,10 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
                 #print "  math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, temp2)  =  ", ist_power
                 di = 1 - ist_power
                 nsol[m] = Mutation(yRep[m], di, b[m], a[m])
-                
+
     if mp < 0.75:
         #print "Normal mutation  for solution {0} ".format(i)
-        return nsol, x_K
+        return list(nsol), x_K
 
     elif mp>=0.75 and mp<0.9:
         """Insertion Mutation"""
@@ -190,13 +190,13 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
         if x_count < max_solution_length: # If count=0, that means Repaired solution yRep if full and insertion mutation cannot be performed
             #print "Insert mutation  for solution {0} ".format(i)
             for j in range(len(data_value)):
-                yRep[count]=data_value[j]
+                nsol[count]=data_value[j]
                 count+=1
-            nsol = list(yRep)
+            nsol = list(nsol)
             return nsol, x_K+1
         else:
             #print "Insert mutation, but no change  for solution {0} ".format(i)
-            nsol=list(yRep)
+            nsol=list(nsol)
             return nsol, x_K
 
     elif mp>=0.9  and mp<=1.0:
@@ -208,14 +208,14 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
             """Perform deletion mutation""" # values in yRep. So  yRep should contain more nonzero value than "chromosome length"
             #print "Deletion Mutation  for solution {0} ".format(i)
             for j in range (data_length):
-                yRep[count-1]=0
+                nsol[count-1]=0
                 count-=1
-            nsol=list(yRep)
+            nsol=list(nsol)
             #print "New Solution", nsol
             return nsol,x_K-1
         else:
             #print "Deletion Mutation, but no change for solution {0}".format(i)
-            nsol = list(yRep)
+            nsol = list(nsol)
             #print "New Solution remain same : ", nsol
             return nsol, x_K
 
