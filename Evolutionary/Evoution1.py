@@ -157,7 +157,7 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
                         b[m]=1
                         a[m]=0
                     p=eta + 1
-                    temp2 = math.pow(abs((b[m] - yRep[m]) / (b[m] - a[m])),p)
+                    temp2 = math.pow(((b[m] - yRep[m]) / (b[m] - a[m])),p)
                     temp1=((2 * DeltaR) + (1 - 2 * DeltaR) *temp2 )
                     t1=1 /float(p)
                     di = math.pow(abs(temp1), t1)-1
@@ -169,7 +169,7 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
                         b[m] = 1
                         a[m] = 0
                     temp2=float((eta + 1))
-                    temp1 = math.pow(abs((yRep[m] - a[m]) / (b[m] - a[m])),temp2)
+                    temp1 = math.pow(((yRep[m] - a[m]) / (b[m] - a[m])),temp2)
                     temp3= 1/temp2
                     ist_power = math.pow(abs(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1), temp3)
                     #print "  math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, temp2)  =  ", ist_power
