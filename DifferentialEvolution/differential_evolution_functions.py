@@ -64,7 +64,7 @@ def Select_Random(Q, mapped_matrix, population,i,flag, x):
             # print "mapped matrix : ", mapped_matrix[int(rand_neuron2)][:10], type(mapped_matrix[int(rand_neuron2)])
             if i not in indices_covered:
                  #print "indices covered in list : ", rand_neuron2
-                 if not (np.array_equal(mapped_matrix[int(rand_neuron2)], x) and np.array_equal(mapped_matrix[int(rand_neuron2)], np.asarray(y1))):
+                 if not (np.array_equal(mapped_matrix[int(rand_neuron2)], x) or np.array_equal(mapped_matrix[int(rand_neuron2)], np.asarray(y1))):
                     #print "not equal for y2"
                     indices_covered.append(i)
                     for j in range(len(mapped_matrix[0])):
@@ -96,7 +96,7 @@ def Select_Random(Q, mapped_matrix, population,i,flag, x):
                 break
         for i in range(len(Q)):
             rand_neuron2 = Q[i]
-            if i not in indices_covered and not (np.array_equal(population[int(rand_neuron2)],x) and np.array_equal(population[int(rand_neuron2)], np.asarray(y1))):
+            if i not in indices_covered and not (np.array_equal(population[int(rand_neuron2)],x) or np.array_equal(population[int(rand_neuron2)], np.asarray(y1))):
                 indices_covered.append(i)
                 for j in range(len(population[0])):
                     y2.insert(j, population[int(rand_neuron2)][j])
