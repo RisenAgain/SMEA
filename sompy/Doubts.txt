@@ -1,0 +1,6 @@
+1. Seperate SOM for gene and cond
+2. Sigma knot initial value
+3. Line 210, s+1
+4. Sigma < 1 => No neighbour neurons
+
+5. Change mapping and mating pool functions
