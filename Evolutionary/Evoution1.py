@@ -174,6 +174,8 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
                 #print "  math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, temp2)  =  ", ist_power
                 di = 1 - ist_power
                 nsol[m] = Mutation(yRep[m], di, b[m], a[m])
+        else:
+            nsol[m] = yRep[m]
 
     if mp < 0.75:
         #print "Normal mutation  for solution {0} ".format(i)
