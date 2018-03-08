@@ -83,7 +83,7 @@ for i in range(1,CH+1):
     K_gene.insert(i,n)
     cluster = KMeans(n_clusters=n, init='random', max_iter=1, n_init=1)
     cluster.fit(Idata_gene)
-    label = cluster.predict(Idata_gene)
+    label = cluster.labels_
     centers = cluster.cluster_centers_
     centers = np.reshape(centers, n*feature_gene)
     z = int(max_choromosome_length_gene - (n* feature_gene))  ##Calculate number of zeros to append(Maximum cluster dimension - Current cluster dimension)
@@ -102,7 +102,7 @@ for i in range(1,CH_cond+1):
     K_cond.insert(i, n1)
     cluster1 = KMeans(n_clusters=n1, init='random', max_iter=1, n_init=1)
     cluster1.fit(Idata_condition)
-    label1 = cluster1.predict(Idata_condition)
+    label1 = cluster1.labels_
     centers1 = cluster1.cluster_centers_
     centers1 = np.reshape(centers1, n1 * feature_cond)
     z = int(max_choromosome_length_cond - (n1 * feature_cond))  ##Calculate number of zeros to append(Maximum cluster dimension - Current cluster dimension)
@@ -268,7 +268,7 @@ while t<T:
         cluster = KMeans(n_clusters=cluster_center.shape[0], init=cluster_center)
         cluster.fit(Idata_gene)
         new_center = cluster.cluster_centers_
-        new_label = cluster.predict(Idata_gene)
+        new_label = cluster.labels_
         lat_updated_nsol = []  # new solution after appending zero
         for j in range(len(new_center)):
             for k in range(len(Idata_gene[0])):
@@ -292,7 +292,7 @@ while t<T:
         cluster = KMeans(n_clusters=cluster_center1.shape[0], init=cluster_center1)
         cluster.fit(Idata_condition)
         new_center1 = cluster.cluster_centers_
-        new_label1 = cluster.predict(Idata_condition)
+        new_label1 = cluster.labels_
         lat_updated_nsol1 = []  # new solution after appending zero
         for j in range(len(new_center1)):
             for k in range(len(Idata_condition[0])):
