@@ -9,3 +9,7 @@ instances in the training instance cluster. Thus both clusters vary coherently.
 The goodness of a bi-cluster is measured with multiple metrics including Mean Square Residue (MSR), Row Variance (RV), Bi-cluster 
 Index (BI), Bi-cluster Size (BS), Bi-cluster Volume (BV). Thus to optimize these multiple objective functions, we use SMEA. The
 bi-clusters can then be used to determine which features are important for a particular category of training instances.
+
+The algorithm is mainly implemented in file [sompy/main_bi.py](https://github.com/chiragiitp/SMEA/blob/master/sompy/main_bi.py).
+
+Sompy is the implementation of Self-organizing map which have been taken and modified for this problem from [here](https://github.com/sevamoo/SOMPY).
