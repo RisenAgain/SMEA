@@ -275,14 +275,14 @@ while t<T:
                 lat_updated_nsol.append(new_center[j][k])
         if not max_choromosome_length_gene - len(lat_updated_nsol) == 0:
             extra_zero = max_choromosome_length_gene - len(lat_updated_nsol)
-            lat_updated_nsol.extend(0 for x in range(extra_zero))
+            lat_updated_nsol.extend(extra_zero*[0])
 
         """------------------------solution generation for condition solution------------"""
         temp1_cond = A_population[i][len(population_gene[0]) : (len(population_gene[0]) + len(population_cond[0]))]
         temp1_cond_K=A_K_population[i][1]
         MatingPool_cond, flag_cond = generate_matingPool(H, i, temp1_cond, temp1_cond_K, feature_cond, neuron_weight_cond, neuron_K_cond, len(pop_cond_data), beta=0.8)
         if flag_cond == 0:
-            upd_sol_cond, upd_sol_K_cond= Generate(Idata_condition, MatingPool_cond, neuron_weight_cond, H, pop_cond_data, i, temp1_cond, temp1_cond_K, feature_cond, flag_cond, max_choromosome_length_cond, pop_cond_max_list, pop_cond_min_list, CR=0.8, F=0.8, mutation_prob=0.6, eta=20)  # Generate new solution/Children
+            upd_sol_cond, upd_sol_K_cond = Generate(Idata_condition, MatingPool_cond, neuron_weight_cond, H, pop_cond_data, i, temp1_cond, temp1_cond_K, feature_cond, flag_cond, max_choromosome_length_cond, pop_cond_max_list, pop_cond_min_list, CR=0.8, F=0.8, mutation_prob=0.6, eta=20)  # Generate new solution/Children
         else:
             upd_sol_cond, upd_sol_K_cond = Generate(Idata_condition, MatingPool_cond, neuron_weight_cond, H, pop_cond_data, i, temp1_cond, temp1_cond_K, feature_cond, flag_cond, max_choromosome_length_cond, pop_cond_max_list, pop_cond_min_list, CR=0.8, F=0.8, mutation_prob=0.6, eta=20)  # Generate new solution/Children
         #print "updated generated sol:", upd_sol, len(upd_sol)
@@ -299,7 +299,7 @@ while t<T:
                 lat_updated_nsol1.append(new_center1[j][k])
         if not max_choromosome_length_cond - len(lat_updated_nsol1) == 0:
             extra_zero = max_choromosome_length_cond - len(lat_updated_nsol1)
-            lat_updated_nsol1.extend(0 for x in range(extra_zero))
+            lat_updated_nsol1.extend(extra_zero*[0])
 
         Bicluster, min_MSR, new_MSR_avg, max_RV, new_RVavg, max_new_BIsize, new_BIsize, min_new_BI_index, new_BI_index, max_new_vol, avg_vol = form_bicluster_and_cal_objectives(upd_sol_K, Idata_gene, new_label, upd_sol_K_cond, Idata_condition, new_label1,MSR_threshold=1200)
 
@@ -360,7 +360,7 @@ while t<T:
     ax.set_zlabel('B_Size')
     ax.grid(True)
     ax.scatter(MSR, RV, BIsize,  zdir='z', s=20, color='b', marker='.')
-    name1 = 'PF_leukemia_genration_{0}.jpeg'.format(t)
+    name1 = 'PF_sms_genration_{0}.jpeg'.format(t)
     plt.savefig('/home/chirag/btp_project/SMEA_Text_biclustering/pareto_front_plots/sms/run1/'+ name1)
     t += 1  # Increment the generation
     #break

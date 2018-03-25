@@ -167,11 +167,11 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
                 if b[m] == a[m]:
                     b[m] = 1
                     a[m] = 0
-                temp2=float((eta + 1))
-                temp1 = math.pow(((yRep[m] - a[m]) / (b[m] - a[m])),temp2)
-                temp3= 1/temp2
-                ist_power = math.pow(abs(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1), temp3)
-                #print "  math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, temp2)  =  ", ist_power
+                p=float((eta + 1))
+                temp1 = math.pow(((yRep[m] - a[m]) / (b[m] - a[m])),p)
+                temp2= 1/p
+                ist_power = math.pow(abs(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1), temp2)
+                #print "  math.pow(2 - 2 * DeltaR + (2 * DeltaR - 1) * temp1, p)  =  ", ist_power
                 di = 1 - ist_power
                 nsol[m] = Mutation(yRep[m], di, b[m], a[m])
         else:
