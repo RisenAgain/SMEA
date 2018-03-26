@@ -163,8 +163,8 @@ problem = None
 evolution = None
 
 """SOM parameters"""
-snot_gene=float(k1_gene/2)   # Initial value of Sigma=2 for gene solutions
-snot_cond=float(k1_cond/2)   # Initial value of Sigma=2 for condition solutions
+snot_gene=math.sqrt((float(k1_gene**2)/2)+(float(k2_gene**2)/2))/2   # Initial value of Sigma=2 for gene solutions
+snot_cond=math.sqrt((float(k1_cond**2)/2)+(float(k2_cond**2)/2))/2   # Initial value of Sigma=2 for condition solutions
 tnot=0.1  # Initial value of tau=0.1 Take 0.9  as tau and check result
 t=0   # Initial Generation t= 0
 H= 5  # int(input("Enter the size of neighbourhood mating pool: ")) #Size of mating pool
