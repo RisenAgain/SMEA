@@ -207,7 +207,7 @@ while t<T:
     for s in range(len(SOM_data_gene)):
         #print "SOM Training for gene data "
         s_value=np.copy(SOM_data_gene[s])
-        new_snot, new_tnot = update_training_parameters (T, len(SOM_data_gene),t+1,s,snot_gene,tnot) #Initial values, T=10(Constant), t=0,s=0,snot=2,tnot=0.1
+        new_snot, new_tnot = update_training_parameters (T, len(SOM_data_gene),t+1,s+1,snot_gene,tnot) #Initial values, T=10(Constant), t=0,s=0,snot=2,tnot=0.1
         winning_neuron = closest_neuron(s_value, SOM_data_K_gene[s], neuron_weight_gene, neuron_K_gene,feature_gene)
         neighbour_neuron=locate_neighbouring_neurons(winning_neuron, lattice_gene, new_snot)
         print("\n\n Neighbour_neurons:\n",neighbour_neuron,"\n\n")
@@ -218,7 +218,7 @@ while t<T:
     for s in range(len(SOM_data_cond)):
         #print "SOM Training for condition data "
         s_value1 = np.copy(SOM_data_cond[s])
-        new_snot1, new_tnot1 = update_training_parameters(T, len(SOM_data_cond), t + 1, s, snot_cond, tnot)  # Initial values, T=10(Constant), t=0,s=0,snot=2,tnot=0.1
+        new_snot1, new_tnot1 = update_training_parameters(T, len(SOM_data_cond), t + 1, s+1, snot_cond, tnot)  # Initial values, T=10(Constant), t=0,s=0,snot=2,tnot=0.1
         winning_neuron1 = closest_neuron(s_value1, SOM_data_K_cond[s], neuron_weight_cond, neuron_K_cond, feature_cond)
         neighbour_neuron1 = locate_neighbouring_neurons(winning_neuron1, lattice_cond, new_snot1)
         neuron_weight_cond = update_weights(neuron_weight_cond, neuron_K_cond, neighbour_neuron1, new_tnot1, s_value1, SOM_data_K_cond[s], feature_cond)
