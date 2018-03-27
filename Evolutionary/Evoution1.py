@@ -70,7 +70,7 @@ def mapping(data, data_K, matrix, matrix_K, feature):   #A, A_K, neuron_data, ne
 
     return neuron_to_data_mapping
 
-def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, neuron_to_data_mapping, beta=0):   #H, i, A[i],A_K[i], neuron_weight, neuron_K, beta=0.7
+def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, neuron_to_data_mapping, lattice, beta=0):   #H, i, A[i],A_K[i], neuron_weight, neuron_K, beta=0.7
     """
     :param H: Number of solutions in mating pool of each neuron (size of H<=no. of neuron in Lattice)
     :param i: current solution no.
@@ -87,27 +87,45 @@ def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, neu
     flag=0
     if uniform(0,1)<beta:
         flag=0
+        mapped_neuron = None
+        for k,v in neuron_to_data_mapping.items():
+            if(np.array_equal(x,v)):
+                mapped_neuron = k
+                break
+        neuron_index = lattice[mapped_neuron]
+
         for j in range(len(matrix)):
-             l=min(x_K*feature, matrix_K[j]*feature)
-             temp1=np.copy(x[:l])
-             temp2 = np.copy(matrix[j][:l])
-             dist = np.linalg.norm(temp1 - temp2)
-             dd[j] = dist
+            if(j != mapped_neuron):
+                other_neuron = lattice[j]
+                dist = np.linalg.norm(np.asarray(lattice[j])-np.asarray(neuron_index))
+                dd[j] = dist
+        # for j in range(len(matrix)):
+        #      l=min(x_K*feature, matrix_K[j]*feature)
+        #      temp1=np.copy(x[:l])
+        #      temp2 = np.copy(matrix[j][:l])
+        #      dist = np.linalg.norm(temp1 - temp2)
+        #      dd[j] = dist
         sorted_x = sorted(dd.items(), key=operator.itemgetter(1))
 
         counter=0
         for k, v in sorted_x:
-            if counter<H+1:
+            if counter<H:
                 mating_pool.insert(counter,k)
                 counter+=1
-        if i in mating_pool:
-            mating_pool.remove(i)
+        # if i in mating_pool:
+        #     mating_pool.remove(i)
     else:
         flag=1
         #print "Random probability is greater than Beta for this neuron therefore assign population as the mating pool for neuron {0}".format(i)
-        mating_pool=list(np.arange(0, pop_length))
-        if i in mating_pool:
-            mating_pool.remove(i)
+        mapped_neuron = None
+        for k,v in neuron_to_data_mapping.items():
+            if(np.array_equal(x,v)):
+                mapped_neuron = k
+                break
+
+        mating_pool=list(np.arange(0, len(matrix)))
+        if mapped_neuron in mating_pool:
+            mating_pool.remove(mapped_neuron)
         #print  "Mating pool for solution {} in population".format(i),mating_pool
     return np.asarray(mating_pool),flag
 
