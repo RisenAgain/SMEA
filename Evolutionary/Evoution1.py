@@ -129,12 +129,12 @@ def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, neu
         #print  "Mating pool for solution {} in population".format(i),mating_pool
     return np.asarray(mating_pool),flag
 
-def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_length, b, a,CR=0,F=0, mutation_prob=0,eta=0):
+def Generate(Idata,Q, neuron_to_data_mapping, neuron_weights, H, population,i, x, x_K, feature,flag, max_solution_length, b, a,CR=0,F=0, mutation_prob=0,eta=0):
             #Idata,MatingPool, neuron_weight, H, A, i,A[i], A_K[i],feature,flag,CR=0.8,F=0.8,mutation_prob=0.6,eta=20
     """
     :param Idata: Normalised Dataset
     :param Q: Mating pool
-    :param mapp: Neuron weight matrix(after one to one mapping of solutions to neurons weight)
+    :param neuron_weights: Neuron weight matrix
     :param population: Archive population
     :param i: current solution index
     :param x: current solution
@@ -149,7 +149,7 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
     """
     mp=uniform(0,1)
     yRep = []
-    y1, y2 = Select_Random(Q, mapp, population,i,flag, x)
+    y1, y2 = Select_Random(Q, neuron_to_data_mapping, neuron_weights, population,i,flag, x)
     # print "solution y1 : ", y1
     # print "solution y2 : ", y2
     y_dash = []
@@ -165,7 +165,7 @@ def Generate(Idata,Q, mapp, H, population,i, x, x_K, feature,flag, max_solution_
             y_dash.insert(j, x_copy[j])                      #Otherwise
     y_dash.extend(0 for j in range(len(x_copy)-x_count))
     y_dash = np.array(y_dash)
-    yRep = Repair_Solution(y_dash, population, mapp, flag, x_K, x_count, b, a, feature)  # Repaired solution
+    yRep = Repair_Solution(y_dash, population, neuron_weights, flag, x_K, x_count, b, a, feature)  # Repaired solution
 
     for m in range(x_count): # Since x_count holds nonzero count of y_dash and so of yRep
         if mutation_prob > uniform(0,1):  # Mutation probability
