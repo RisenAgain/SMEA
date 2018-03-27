@@ -280,7 +280,7 @@ while t<T:
         """------------------------solution generation for condition solution------------"""
         temp1_cond = A_population[i][len(population_gene[0]) : (len(population_gene[0]) + len(population_cond[0]))]
         temp1_cond_K=A_K_population[i][1]
-        MatingPool_cond, flag_cond = generate_matingPool(H, i, temp1_cond, temp1_cond_K, feature_cond, neuron_weight_cond, neuron_K_cond, len(pop_cond_data), neuron_to_data_mapping_cond, lattice_cond, beta=0.8)
+        MatingPool_cond, flag_cond = generate_matingPool(H, i, temp1_cond, temp1_cond_K, feature_cond, neuron_weight_cond, neuron_K_cond, len(pop_cond_data), neuron_to_data_mapping_cond, lattice_cond, beta=0.7)
         if flag_cond == 0:
             upd_sol_cond, upd_sol_K_cond = Generate(Idata_condition, MatingPool_cond, neuron_to_data_mapping_cond, neuron_weight_cond, H, pop_cond_data, i, temp1_cond, temp1_cond_K, feature_cond, flag_cond, max_choromosome_length_cond, pop_cond_max_list, pop_cond_min_list, CR=0.8, F=0.8, mutation_prob=0.6, eta=20)  # Generate new solution/Children
         else:
