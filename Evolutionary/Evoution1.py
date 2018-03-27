@@ -19,7 +19,7 @@ def mapping(data, data_K, matrix, matrix_K, feature):   #A, A_K, neuron_data, ne
     """
 
     dd={} #Dictionary for distance
-    data_to_neuron_mapping = {}
+    neuron_to_data_mapping = {}
     if matrix.size==data.size:
         U = np.arange(data.shape[0]) # Set of neurons in lattice
         for i in range(len(data)): # For each population neuron
@@ -53,7 +53,7 @@ def mapping(data, data_K, matrix, matrix_K, feature):   #A, A_K, neuron_data, ne
                     if k == U[m]:
                         # matrix[k]=temp1_copy
                         # matrix_K[k]=temp1_K
-                        data_to_neuron_mapping[i] = k
+                        neuron_to_data_mapping[k] = np.copy(data[i])
                         found_index = np.where(U == k)
                         #print "Found Index:   ",found_index
                         U=np.delete(U,found_index)
@@ -68,9 +68,9 @@ def mapping(data, data_K, matrix, matrix_K, feature):   #A, A_K, neuron_data, ne
         print("Number of neurons not equal to number of training points.")
         raise AssertionError
 
-    return data_to_neuron_mapping
+    return neuron_to_data_mapping
 
-def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, beta=0):   #H, i, A[i],A_K[i], neuron_weight, neuron_K, beta=0.7
+def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, neuron_to_data_mapping, beta=0):   #H, i, A[i],A_K[i], neuron_weight, neuron_K, beta=0.7
     """
     :param H: Number of solutions in mating pool of each neuron (size of H<=no. of neuron in Lattice)
     :param i: current solution no.
