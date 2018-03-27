@@ -59,7 +59,6 @@ print "Max. no. of cluster in gene and condition data  : ",max_cluster_gene,",",
 max_choromosome_length_gene = (max_cluster_gene)*len(Idata_gene[0])
 max_choromosome_length_cond = (max_cluster_cond)*len(Idata_condition[0])
 print "Max. length of chromosome for gene and condition: ", max_choromosome_length_gene, max_choromosome_length_cond
-pdb.set_trace()
 
 """No. of features in gene and condition data"""
 feature_gene=len(Idata_gene[0])      #no. of features present in gene data
@@ -210,7 +209,7 @@ while t<T:
         new_snot, new_tnot = update_training_parameters (T, len(SOM_data_gene),t+1,s+1,snot_gene,tnot) #Initial values, T=10(Constant), t=0,s=0,snot=2,tnot=0.1
         winning_neuron = closest_neuron(s_value, SOM_data_K_gene[s], neuron_weight_gene, neuron_K_gene,feature_gene)
         neighbour_neuron=locate_neighbouring_neurons(winning_neuron, lattice_gene, new_snot)
-        print("\n\n Neighbour_neurons:\n",neighbour_neuron,"\n\n")
+        # print("\n\n Neighbour_neurons:\n",neighbour_neuron,"\n\n")
         neuron_weight_gene=update_weights(neuron_weight_gene, neuron_K_gene, neighbour_neuron, new_tnot, s_value, SOM_data_K_gene[s],feature_gene)
     #print "Updated neuron weight  after training using gene solutions:  \n ",neuron_weight_gene
 
@@ -243,8 +242,9 @@ while t<T:
     pop_cond_data=np.asarray(pop_cond_data)
 
     """-------------Performing one to one mapping of solutions to neurons weight------------"""
-    neuron_weight_gene, neuron_K_gene = mapping(A_gene, A_gene_K, neuron_weight_gene, neuron_K_gene, feature_gene)
-    neuron_weight_cond, neuron_K_cond= mapping(A_cond, A_cond_K, neuron_weight_cond, neuron_K_cond, feature_cond)
+    pdb.set_trace()
+    data_to_neuron_mapping_gene = mapping(A_gene, A_gene_K, neuron_weight_gene, neuron_K_gene, feature_gene)
+    data_to_neuron_mapping_cond = mapping(A_cond, A_cond_K, neuron_weight_cond, neuron_K_cond, feature_cond)
 
 
     pop_gene_max_list = population[:, :len(population_gene[0])].max(0)
