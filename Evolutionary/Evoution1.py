@@ -68,6 +68,9 @@ def mapping(data, data_K, matrix, matrix_K, feature):   #A, A_K, neuron_data, ne
             while(counter < len(data_neurons_sorted_dist) and data_neurons_sorted_dist[counter][1][0][1] < temp[1][0][1]):
                 counter += 1
             data_neurons_sorted_dist.insert(counter,temp)
+        else:
+            print("Unknown case encountered")
+            raise AssertionError
 
     return neuron_to_data_mapping, data_to_neuron_mapping
 
@@ -137,7 +140,7 @@ def Generate(Idata,Q, neuron_to_data_mapping, data_to_neuron_mapping, neuron_wei
     """
     mp=uniform(0,1)
     yRep = []
-    y1, y2 = Select_Random(Q, neuron_to_data_mapping, neuron_weights, population,i,flag, x)
+    y1, y2 = Select_Random(Q, neuron_weights, population,i,flag, x)
     # print "solution y1 : ", y1
     # print "solution y2 : ", y2
     y_dash = []

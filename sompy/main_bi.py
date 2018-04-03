@@ -263,7 +263,6 @@ while t<T:
         """------------------------solution generation for gene solution------------"""
         temp1_gene= A_population[i][ :len(population_gene[0])]
         temp1_gene_K=A_K_population[i][0]
-        pdb.set_trace()
         MatingPool_gene, flag_gene = generate_matingPool(H, i,temp1_gene, temp1_gene_K, feature_gene, neuron_weight_gene, neuron_K_gene, pop_gene_data, len(pop_gene_data), neuron_to_data_mapping_gene, data_to_neuron_mapping_gene, lattice_gene, beta=0.7)
         if flag_gene == 0:
                 upd_sol, upd_sol_K = Generate(Idata_gene, MatingPool_gene, neuron_to_data_mapping_gene, data_to_neuron_mapping_gene, neuron_weight_gene, H, pop_gene_data, i, temp1_gene, temp1_gene_K, feature_gene, flag_gene, max_choromosome_length_gene, pop_gene_max_list, pop_gene_min_list, CR=0.8, F=0.8, mutation_prob=0.6, eta=20)  # Generate new solution/Children

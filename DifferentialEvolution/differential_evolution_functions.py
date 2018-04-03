@@ -26,7 +26,7 @@ def Repair_Solution( y, population, map_matrix, flag , x_K, x_count, b,a, featur
     yRep.extend(0 for j in range(actual_length_y - x_count))  # Append extra zeros
     return yRep
 
-def Select_Random(Q, neuron_to_data_mapping, neuron_weights, population,i,flag, x):
+def Select_Random(Q, neuron_weights, population,i,flag, x):
     '''
     :param neuron_weights: Neuron weight matrix
     :param population: archive Population
@@ -49,11 +49,11 @@ def Select_Random(Q, neuron_to_data_mapping, neuron_weights, population,i,flag, 
         # print "current solution : ", x[:10], type(x)
         # print "neuron number : ", rand_neuron1, type(rand_neuron1)
         #print "mapped matrix : ", neuron_weights[int(rand_neuron1)][:10], type(neuron_weights[int(rand_neuron1)])
-        if not np.array_equal(neuron_to_data_mapping[int(rand_neuron1)], x):
+        if not np.array_equal(population[int(rand_neuron1)], x):
             #print "not equal for y1"
             indices_covered.append(i)
             for j in range(len(x)):
-                y1.insert(j, neuron_to_data_mapping[int(rand_neuron1)][j])
+                y1.insert(j, population[int(rand_neuron1)][j])
             break
 
 
@@ -64,11 +64,11 @@ def Select_Random(Q, neuron_to_data_mapping, neuron_weights, population,i,flag, 
         # print "mapped matrix : ", neuron_weights[int(rand_neuron2)][:10], type(neuron_weights[int(rand_neuron2)])
         if i not in indices_covered:
              #print "indices covered in list : ", rand_neuron2
-             if not (np.array_equal(neuron_to_data_mapping[int(rand_neuron2)], x) or np.array_equal(neuron_to_data_mapping[int(rand_neuron2)], np.asarray(y1))):
+             if not (np.array_equal(population[int(rand_neuron2)], x) or np.array_equal(population[int(rand_neuron2)], np.asarray(y1))):
                 #print "not equal for y2"
                 indices_covered.append(i)
                 for j in range(len(x)):
-                    y2.insert(j, neuron_to_data_mapping[int(rand_neuron2)][j])
+                    y2.insert(j, population[int(rand_neuron2)][j])
                 break
     if len(y1)==0:
         a=x * uniform(0, 1)
@@ -76,48 +76,12 @@ def Select_Random(Q, neuron_to_data_mapping, neuron_weights, population,i,flag, 
     elif len(y2)==0:
         b = x * uniform(0, 1)
         return y1, b.tolist()
-    else:
+    elif (len(y1) > 0 and len(y2) > 0):
         return y1, y2
-
-
-
-    # elif flag==1:
-    #     #print type(population[0]), type(x)
-    #     y1 = []
-    #     y2 = []
-    #     np.random.shuffle(Q)
-
-    #     for i in range(len(Q)):
-    #         rand_neuron1 = Q[i]
-    #         if not np.array_equal(population[int(rand_neuron1)], x):
-    #             indices_covered.append(i)
-    #             for j in range(len(population[0])):
-    #                 y1.insert(j, population[int(rand_neuron1)][j])
-    #             break
-    #     for i in range(len(Q)):
-    #         rand_neuron2 = Q[i]
-    #         if i not in indices_covered and not (np.array_equal(population[int(rand_neuron2)],x) or np.array_equal(population[int(rand_neuron2)], np.asarray(y1))):
-    #             indices_covered.append(i)
-    #             for j in range(len(population[0])):
-    #                 y2.insert(j, population[int(rand_neuron2)][j])
-    #             break
-
-    #     if len(y1) == 0:
-    #         a = x * uniform(0, 1)
-    #         return a.tolist(), y2
-    #     elif len(y2) == 0:
-    #         b = x * uniform(0, 1)
-    #         return y1, b.tolist()
-    #     else:
-    #         return y1, y2
-
-
-    # if len(indices_covered) == 0:
-    #     a = x * uniform(0, 1)
-    #     b = x * uniform(0, 1)
-    #     return a.tolist(), b.tolist()
-
-
+    else:
+        a = x * uniform(0, 1)
+        b = x * uniform(0, 1)
+        return a.tolist(), b.tolist()
 
 def Mutation(yRval,di,xmax,xmin):
     '''
