@@ -246,7 +246,7 @@ while t<T:
     # A_cond, A_cond_K = find_unique_elements(pop_cond_data, pop_cond_K, CH_cond)    #find unique condition solution in population
     pop_gene_data=np.asarray(pop_gene_data)
     pop_cond_data=np.asarray(pop_cond_data)
-    pdb.set_trace()
+
     """-------------Performing one to one mapping of solutions to neurons weight------------"""
     neuron_to_data_mapping_gene, data_to_neuron_mapping_gene = mapping(pop_gene_data, pop_gene_K, neuron_weight_gene, neuron_K_gene, feature_gene)
     neuron_to_data_mapping_cond, data_to_neuron_mapping_cond = mapping(pop_cond_data, pop_cond_K, neuron_weight_cond, neuron_K_cond, feature_cond)
@@ -263,7 +263,8 @@ while t<T:
         """------------------------solution generation for gene solution------------"""
         temp1_gene= A_population[i][ :len(population_gene[0])]
         temp1_gene_K=A_K_population[i][0]
-        MatingPool_gene, flag_gene = generate_matingPool(H, i,temp1_gene, temp1_gene_K, feature_gene, neuron_weight_gene, neuron_K_gene, len(pop_gene_data), neuron_to_data_mapping_gene, data_to_neuron_mapping_gene, lattice_gene, beta=0.7)
+        pdb.set_trace()
+        MatingPool_gene, flag_gene = generate_matingPool(H, i,temp1_gene, temp1_gene_K, feature_gene, neuron_weight_gene, neuron_K_gene, pop_gene_data, len(pop_gene_data), neuron_to_data_mapping_gene, data_to_neuron_mapping_gene, lattice_gene, beta=0.7)
         if flag_gene == 0:
                 upd_sol, upd_sol_K = Generate(Idata_gene, MatingPool_gene, neuron_to_data_mapping_gene, data_to_neuron_mapping_gene, neuron_weight_gene, H, pop_gene_data, i, temp1_gene, temp1_gene_K, feature_gene, flag_gene, max_choromosome_length_gene, pop_gene_max_list, pop_gene_min_list, CR=0.8, F=0.8, mutation_prob=0.6, eta=20)  # Generate new solution/Children
         else:
@@ -285,7 +286,7 @@ while t<T:
         """------------------------solution generation for condition solution------------"""
         temp1_cond = A_population[i][len(population_gene[0]) : (len(population_gene[0]) + len(population_cond[0]))]
         temp1_cond_K=A_K_population[i][1]
-        MatingPool_cond, flag_cond = generate_matingPool(H, i, temp1_cond, temp1_cond_K, feature_cond, neuron_weight_cond, neuron_K_cond, len(pop_cond_data), neuron_to_data_mapping_cond, data_to_neuron_mapping_cond, lattice_cond, beta=0.7)
+        MatingPool_cond, flag_cond = generate_matingPool(H, i, temp1_cond, temp1_cond_K, feature_cond, neuron_weight_cond, neuron_K_cond, pop_cond_data, len(pop_cond_data), neuron_to_data_mapping_cond, data_to_neuron_mapping_cond, lattice_cond, beta=0.7)
         if flag_cond == 0:
             upd_sol_cond, upd_sol_K_cond = Generate(Idata_condition, MatingPool_cond, neuron_to_data_mapping_cond, data_to_neuron_mapping_cond, neuron_weight_cond, H, pop_cond_data, i, temp1_cond, temp1_cond_K, feature_cond, flag_cond, max_choromosome_length_cond, pop_cond_max_list, pop_cond_min_list, CR=0.8, F=0.8, mutation_prob=0.6, eta=20)  # Generate new solution/Children
         else:
