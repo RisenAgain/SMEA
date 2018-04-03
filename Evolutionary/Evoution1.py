@@ -18,59 +18,60 @@ def mapping(data, data_K, matrix, matrix_K, feature):   #A, A_K, neuron_data, ne
     :return: Mapped matrix "matrix"
     """
 
+    max_mapped = math.ceil(data.shape[0]/matrix.shape[0])  # Maximum no. of solutions that can be mapped to a single neuron
+
     dd={} #Dictionary for distance
     neuron_to_data_mapping = {}
-    if matrix.size==data.size:
-        U = np.arange(data.shape[0]) # Set of neurons in lattice
-        for i in range(len(data)): # For each population neuron
+    data_to_neuron_mapping = {}
+    data_neurons_sorted_dist = {}
+    U = np.arange(matrix.shape[0]) # Set of neurons in lattice
+    for i in range(len(data)): # For each population neuron
+        temp1_K=np.copy(data_K[i])
+
+        '''During finding minimum distance between input and the weight vector
+            chose the dimension of one which has max appended zero[Line 33- Line47]'''
+        datacounter=temp1_K*feature
+        for j in range(len(matrix)):
             temp1 = np.copy(data[i])
-            temp1_K=np.copy(data_K[i])
-            temp1_copy=list(temp1)
-            #print "Temp1 : ",temp1
-            '''In one to one mapping, during finding minimum distance between input and the weight vector
-                chose the dimension of one which has max appended zero[Line 33- Line47]'''
-            datacounter=temp1_K*feature
-            for j in range(len(matrix)):
-                temp2 = np.copy(matrix[j])
-                temp2_K=np.copy(matrix_K[j])
-                matrixcounter=temp2_K*feature
-                if matrixcounter>datacounter:
-                    for some_counter in range (datacounter,len(temp2)):
-                        temp2[some_counter]=0
-                elif matrixcounter<datacounter:
-                    for some_counter in range (matrixcounter,len(temp1)):
-                        temp1[some_counter]=0
-                elif matrixcounter== datacounter:
-                    pass
+            temp2 = np.copy(matrix[j])
+            temp2_K=np.copy(matrix_K[j])
+            matrixcounter=temp2_K*feature
+            if matrixcounter>datacounter:
+                for some_counter in range (datacounter,len(temp2)):
+                    temp2[some_counter]=0
+            elif matrixcounter<datacounter:
+                for some_counter in range (matrixcounter,len(temp1)):
+                    temp1[some_counter]=0
+            elif matrixcounter== datacounter:
+                pass
 
-                dist = np.linalg.norm(temp1 - temp2)
-                dd[j]=dist
-            sorted_x = sorted(dd.items(), key=operator.itemgetter(1))  #Sort the dictionary in ascending order
+            dist = np.linalg.norm(temp1 - temp2)
+            dd[j]=dist
+        data_neurons_sorted_dist[i] = sorted(dd.items(), key=operator.itemgetter(1))  # Sort the dictionary in ascending order
 
-            for k,v in sorted_x:
-                found=0
-                for m in range((len(U))):
-                    if k == U[m]:
-                        # matrix[k]=temp1_copy
-                        # matrix_K[k]=temp1_K
-                        neuron_to_data_mapping[k] = np.copy(data[i])
-                        found_index = np.where(U == k)
-                        #print "Found Index:   ",found_index
-                        U=np.delete(U,found_index)
-                        found=1
-                        #print "Updated neurons left : ",U
-                        break
-                if found==0:
-                    continue
-                else:
-                    break
-    else:
-        print("Number of neurons not equal to number of training points.")
-        raise AssertionError
+    data_neurons_sorted_dist = sorted(data_neurons_sorted_dist.items(), key=lambda x:x[1][0][1]) # Sort data according to closest distance to neuron
+    while(data_neurons_sorted_dist):
+        closest_neuron = data_neurons_sorted_dist[0][1][0][0]
+        if(not neuron_to_data_mapping.has_key(closest_neuron)):
+            neuron_to_data_mapping[closest_neuron] = [data_neurons_sorted_dist[0][0]]
+            data_to_neuron_mapping[data_neurons_sorted_dist[0][0]] = closest_neuron
+            del data_neurons_sorted_dist[0]
+        elif(len(neuron_to_data_mapping[closest_neuron]) < max_mapped):
+            neuron_to_data_mapping[closest_neuron].append(data_neurons_sorted_dist[0][0])
+            data_to_neuron_mapping[data_neurons_sorted_dist[0][0]] = closest_neuron
+            del data_neurons_sorted_dist[0]
+        elif(len(neuron_to_data_mapping[closest_neuron]) >= max_mapped):
+            del data_neurons_sorted_dist[0][1][0]
+            temp = data_neurons_sorted_dist[0]
+            del data_neurons_sorted_dist[0]
+            counter = 0
+            while(counter < len(data_neurons_sorted_dist) and data_neurons_sorted_dist[counter][1][0][1] < temp[1][0][1]):
+                counter += 1
+            data_neurons_sorted_dist.insert(counter,temp)
 
-    return neuron_to_data_mapping
+    return neuron_to_data_mapping, data_to_neuron_mapping
 
-def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, neuron_to_data_mapping, lattice, beta=0):   #H, i, A[i],A_K[i], neuron_weight, neuron_K, beta=0.7
+def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, neuron_to_data_mapping, data_to_neuron_mapping lattice, beta=0):   #H, i, A[i],A_K[i], neuron_weight, neuron_K, beta=0.7
     """
     :param H: Number of solutions in mating pool of each neuron (size of H<=no. of neuron in Lattice)
     :param i: current solution no.
@@ -129,7 +130,7 @@ def generate_matingPool(H, i, x, x_K, feature, matrix, matrix_K, pop_length, neu
         #print  "Mating pool for solution {} in population".format(i),mating_pool
     return np.asarray(mating_pool),flag
 
-def Generate(Idata,Q, neuron_to_data_mapping, neuron_weights, H, population,i, x, x_K, feature,flag, max_solution_length, b, a,CR=0,F=0, mutation_prob=0,eta=0):
+def Generate(Idata,Q, neuron_to_data_mapping, data_to_neuron_mapping, neuron_weights, H, population,i, x, x_K, feature,flag, max_solution_length, b, a,CR=0,F=0, mutation_prob=0,eta=0):
             #Idata,MatingPool, neuron_weight, H, A, i,A[i], A_K[i],feature,flag,CR=0.8,F=0.8,mutation_prob=0.6,eta=20
     """
     :param Idata: Normalised Dataset
